@@ -75,16 +75,6 @@ const Auth = () => {
                                 {variantLogin === 'login' ? "Utwórz nowe konto ZWIT." : "Zaloguj się do ZWIT."} 
                             </span>  
                         </p>
-                        {variantLogin === 'login' ?
-                        <div>
-                            <p className="text-neutral-500 mt-12 text-center">
-                                Założyłeś konto przez pocztę gmail?
-                            </p>
-                            <p onClick={() => signIn('google', {callbackUrl: '/'})} className="text-green-700 ml-1 cursor-pointer hover:text-green-600 text-center">
-                                Zaloguj się przez gmail. 
-                            </p>  
-                        </div>
-                        : null}
                     </div>
                 </div>
                 <BottomText />
