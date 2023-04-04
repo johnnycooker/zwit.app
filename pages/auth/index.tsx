@@ -5,7 +5,7 @@ import Head from "next/head";
 import { useCallback, useState } from "react";
 import axios from "axios";
 import {signIn} from 'next-auth/react';
-import{FcGoogle} from 'react-icons/fc';
+
 
 const Auth = () => {
 
@@ -40,12 +40,11 @@ const Auth = () => {
                 email,
                 password
             })
-
             login()
         } catch (error){
             console.log(error)
         }
-    }, [email,password]);
+    }, [email,password, login]);
 
 
     return (
