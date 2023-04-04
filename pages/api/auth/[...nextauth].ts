@@ -5,7 +5,7 @@ import {compare} from 'bcrypt';
 
 import GoogleProvider from 'next-auth/providers/google';
 
-//import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import prismadb from '@/lib/prismadb'
 
@@ -58,7 +58,7 @@ export default NextAuth({
         signIn: '/auth'
     },
     debug: process.env.NODE_ENV === 'development',
-    //adapter: PrismaAdapter(prismadb),
+    adapter: PrismaAdapter(prismadb),
     session: {
         strategy: 'jwt',
     },
