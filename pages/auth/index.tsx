@@ -1,29 +1,52 @@
-import Input from "@/components/Input";
-import { useState } from "react";
+import Input from "@/components/auth/Input";
+import BottomText from "@/components/bottomText/bottomText";
+import Version from "@/components/version/version";
+import Head from "next/head";
+import { useCallback, useState } from "react";
 
 const Auth = () => {
  
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const [variantLogin, setVariantLogin] = useState('login');
+
+    const toggleVariantLogin = useCallback(() => {
+        setVariantLogin((currentVariant) => currentVariant === 'login' ? 'register' : 'login')
+    }, [])
+
     return (
       <>
+        <Head>
+            <title>{variantLogin === 'login' ? "Logowanie - ZWIT" : "Rejestracja - ZWIT"}</title>
+        </Head>
         <div className="relative h-full w-full bg-[url('/images/zwit_tlo.webp')] bg-no-repeat bg-center bg-fixed bg-cover">
             <div className="bg-black w-full h-full lg:bg-opacity-70">
-                <nav className="px-12 py-7">
-                    <img src="/images/logo_zabka.webp" alt="Logo" className="h-14"/>
+                <nav className="px-12 py-7 ">
+                    <img src="/images/logo_zabka.webp" alt="Logo" className="h-14 "/>
                 </nav>
                 <div className="flex justify-center">
                     <div className="bg-black bg-opacity-70 px-16 py-16 self-center mt-4 lg:2/5 lg:max-w-lg rounded-lg w-full">
                         <h2 className="text-green-700 text-4xl mb-8 font-semibold text-center">
-                            Logowanie
+                           {variantLogin === 'login' ? "Logowanie" : "Rejestrowanie"} 
                         </h2>
                         <div className="flex flex-col gap-4">
                             <Input label="Email" onChange={(ev: any) => setEmail(ev.target.value)} id="email" type="email" value={email} />
                             <Input label="Hasło" onChange={(ev: any) => setPassword(ev.target.value)} id="password" type="password" value={password} />
                         </div>
+                        <button className="bg-green-800 py-3 text-zinc-300 rounded-md w-full mt-10 hover:bg-green-700 cursor-pointer">
+                            {variantLogin === 'login' ? "Zaloguj się" : "Zarejestruj się"}
+                        </button>
+                        <p className="text-neutral-500 mt-12 text-center">
+                            {variantLogin === 'login' ? "Nie masz konta?" : "Masz już konto?"}
+                            <span onClick={toggleVariantLogin} className="text-green-700 ml-1 cursor-pointer hover:text-green-600">
+                                {variantLogin === 'login' ? "Utwórz nowe konto ZWIT." : "Zaloguj się do ZWIT."} 
+                            </span>  
+                        </p>
                     </div>
                 </div>
+                <BottomText />
+                <Version />
             </div>
         </div>
       </>
