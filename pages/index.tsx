@@ -1,4 +1,5 @@
 import AccountMenu from "@/components/accountMenu";
+import Navbar from "@/components/navbar";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
@@ -27,12 +28,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="flex items-center h-full justify-center">
-        <div className="mt-4 text-gray-400 text-3xl text-center group-hover:text-white">
-          {user?.name}
-          <AccountMenu visible/>
-        </div>
-      </div>
+      <Navbar />
     </>
   )
 }
