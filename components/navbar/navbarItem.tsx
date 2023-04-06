@@ -9,7 +9,7 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
 }) => {
     return (
         <>
-            <div className="text-white cursor-pointer hover:text-gray-300 transition text-semibold text-lg">
+            <div className="text-white cursor-pointer hover:opacity-70 transition text-semibold text-lg">
                 {label}
             </div>
         </>
