@@ -4,6 +4,7 @@ import Version from "@/components/bottomText/version";
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
 import Head from "next/head";
+import Layout from "@/components/layout/layout";
 
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -30,13 +31,9 @@ const Home = () => {
       <Head>
           <title>ZWIT - Menu</title>
       </Head>
-      <Navbar />
-      <div className="relative h-full w-full bg-[url('/images/tlo_menu.webp')] bg-no-repeat  bg-fixed bg-cover">
-        <div className="bg-black w-full h-full lg:bg-opacity-95">
-
-        </div>
-      </div>
-      <BottomText />
+      <Layout>
+        
+      </Layout>
     </>
   )
 }
