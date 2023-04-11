@@ -96,7 +96,7 @@ const Gprs = () => {
                 <p>no enable secret 5 $1$p0JQ$XXOJ0Yh7q9ZdqPs.fD/85.</p>
                 <p>enable secret 0 {submittedData.configPassword}</p>
                 <p>crypto ipsec client ezvpn HQ-RA</p>
-                <p>username SHOP-RA.z{submittedData.shopNumber} password (hasło){submittedData.vpnPassword}</p>
+                <p>username SHOP-RA.z{submittedData.shopNumber} password {submittedData.vpnPassword}</p>
               </div>
           </div>
         </div>
