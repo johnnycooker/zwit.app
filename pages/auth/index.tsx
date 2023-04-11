@@ -1,6 +1,5 @@
 import Input from "@/components/auth/Input";
 import BottomText from "@/components/bottomText/bottomText";
-import Version from "@/components/bottomText/version";
 import Head from "next/head";
 import { useCallback, useState } from "react";
 import axios from "axios";
