@@ -11,7 +11,7 @@ const InsetLink: React.FC<InsetLinkProps> = ({
 }) => {
     return (
         <>
-            <li className="hover:text-green-500 text-white"><Link href={`http://localhost:3000/insets/${url}`}>{label}</Link></li>
+            <li className="hover:text-green-500 text-white"><Link href={`/insets/${url}`}>{label}</Link></li>
         </>
     )
 }
