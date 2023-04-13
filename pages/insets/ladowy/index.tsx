@@ -1,8 +1,8 @@
+import React from "react";
+import Inset from "@/components/inset/inset";
+
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
-import Head from "next/head";
-import Layout from "@/components/layout/layout";
-
 
 export async function getServerSideProps(context: NextPageContext) {
     const session = await getSession(context);
@@ -15,24 +15,21 @@ export async function getServerSideProps(context: NextPageContext) {
             }
         }
     }
-
+  
     return {
         props: {}
     }
 }
 
-const Home = () => {
+
+const InsetLadowy = () => {
 
   return (
     <>
-      <Head>
-          <title>ZWIT - Menu</title>
-      </Head>
-      <Layout>
-        
-      </Layout>
+      <Inset pageName="ladowy"/>
     </>
   )
-}
 
-export default Home
+}
+  
+export default InsetLadowy
