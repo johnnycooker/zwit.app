@@ -1,7 +1,10 @@
 import React from "react";
+
+
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
-import NotesPageComponent from "@/components/notes/notes";
+import NotesElement from "@/components/notes/notesId";
+
 
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -22,15 +25,16 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 
-const Notes = () => {
+const NotesId = () => {
 
+  
 
   return (
     <>
-      <NotesPageComponent />
+      <NotesElement/>
     </>
   )
 
 }
   
-export default Notes
+export default NotesId
