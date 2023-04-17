@@ -18,13 +18,30 @@ interface Link {
   url: string;
 }
 
+interface CurrentUser {
+  id: string;
+}
+
+
+
 const NotesPageComponent = () => {
 
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [name, setName] = useState("");
   const [links, setLinks] = useState<Link[]>([]);
 
   useEffect(() => {
-    axios.get(`${FirebaseUrl}/links.json`).then((response) => {
+    const fetchCurrentUser = async () => {
+      const response = await fetch('/api/current');
+      const data = await response.json();
+      setCurrentUser(data);
+    };
+    fetchCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    if (currentUser?.id) {
+    axios.get(`${FirebaseUrl}/links/${currentUser?.id}/link.json`).then((response) => {
       if (response.data) {
         const fetchedLinks = Object.keys(response.data).map((key) => {
           return {
@@ -35,17 +52,18 @@ const NotesPageComponent = () => {
         setLinks(fetchedLinks);
       }
     });
-  }, []);
+    }
+  }, [currentUser?.id]);
 
   const handleAddLink = () => {
-    axios.post(`${FirebaseUrl}/links.json`, { name, url: `/${name}` }).then((response) => {
+    axios.post(`${FirebaseUrl}/links/${currentUser?.id}/link.json`, { name, url: `/${name}` }).then((response) => {
       setLinks([...links, { id: response.data.name, name, url: `/${name}` }]);
       setName("");
     });
   };
 
   const handleDeleteLink = (id: string) => {
-    axios.delete(`${FirebaseUrl}/links/${id}.json`).then(() => {
+    axios.delete(`${FirebaseUrl}/links/${currentUser?.id}/link/${id}.json`).then(() => {
       setLinks(links.filter((link) => link.id !== id));
     });
   };
@@ -53,7 +71,7 @@ const NotesPageComponent = () => {
   const handleEditLink = (id: string, name: string) => {
     const newName = prompt("Enter new name", name);
     if (newName) {
-      axios.patch(`${FirebaseUrl}/links/${id}.json`, { name: newName }).then(() => {
+      axios.patch(`${FirebaseUrl}/links/${currentUser?.id}/link.json`, { name: newName }).then(() => {
         setLinks(links.map((link) => (link.id === id ? { ...link, name: newName } : link)));
       });
     }
@@ -67,9 +85,9 @@ const NotesPageComponent = () => {
                 <div className="flex flex-row gap-28 w-full ">
 
                     <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 w-full  max-w-[15rem] h-[30rem]  rounded-lg  border-2 border-green-600 border-opacity-20">
-                      <div >
+                      <div>
                         {links.map((link) => (
-                          <ul key={link.id} className="flex flex-row">
+                          <ul key={link.id} className="flex flex-row pb-2">
                             <NoteLink url={link.url} label={link.name}/>
                             <EditButton onClick={() => handleEditLink(link.id, link.name)} />
                             <DeleteButton onClick={() => handleDeleteLink(link.id)} />

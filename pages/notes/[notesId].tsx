@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useRouter } from 'next/router'
 
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
@@ -25,9 +25,9 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 
+
 const NotesId = () => {
 
-  
 
   return (
     <>

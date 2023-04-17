@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import NoteLink from "@/components/notes/noteLink";
-import NoteGenerator from "./noteGenerator";
+
 import { NextPage } from "next";
 import { useRouter } from 'next/router'
 
@@ -147,7 +147,7 @@ const NotesElement: NextPage = () => {
                     <div className="flex flex-col w-full">
                       <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4 h-full  max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20 w-full">
                         <div className="">
-                          <NoteGenerator generateNote={handleGenerateClick} />
+                          
                         </div>
                       </div>
                       <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4 h-full w-full max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20">
