@@ -1,79 +1,127 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import Link from "next/link";
+import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from 'react';
+import parse from 'html-react-parser';
+import 'react-quill/dist/quill.snow.css';
+import axios from 'axios';
 
 const FirebaseUrl = "https://zwit-cba2d-default-rtdb.europe-west1.firebasedatabase.app/";
 
-interface Link {
+interface ObjectData {
   id: string;
-  name: string;
-  url: string;
+  data: string;
 }
 
-const Index = () => {
-  const [name, setName] = useState("");
-  const [links, setLinks] = useState<Link[]>([]);
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+});
+
+const modules = {
+  toolbar: [
+    [{ size: [] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }],
+    ['link', 'image', 'video'],
+    ['clean'],
+  ],
+  clipboard: { matchVisual: false },
+};
+
+const formats = [
+  'size',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'color',
+  'indent',
+  'link',
+  'image',
+  'video',
+];
+
+export default function Home() {
+  const [value, setValue] = useState('');
+  const [objects, setObjects] = useState<ObjectData[]>([]);
 
   useEffect(() => {
-    axios.get(`${FirebaseUrl}/links.json`).then((response) => {
-      if (response.data) {
-        const fetchedLinks = Object.keys(response.data).map((key) => {
-          return {
-            ...response.data[key],
-            id: key,
-          };
-        });
-        setLinks(fetchedLinks);
-      }
-    });
+    axios.get<ObjectData[]>(`${FirebaseUrl}/objects.json`)
+      .then(response => {
+        if (response.data) {
+          const fetchedObjects: ObjectData[] = [];
+          for (const key in response.data) {
+            fetchedObjects.push({
+              id: key,
+              data: response.data[key].data
+            });
+          }
+          setObjects(fetchedObjects);
+        }
+      })
+      .catch(error => console.error(error));
   }, []);
 
-  const handleAddLink = () => {
-    axios.post(`${FirebaseUrl}/links.json`, { name, url: `http://localhost:3000/test/${name}` }).then((response) => {
-      setLinks([...links, { id: response.data.name, name, url: `http://localhost:3000/test/${name}` }]);
-      setName("");
-    });
+  const handleChange = (newValue: string) => {
+    setValue(newValue);
   };
 
-  const handleDeleteLink = (id: string) => {
-    axios.delete(`${FirebaseUrl}/links/${id}.json`).then(() => {
-      setLinks(links.filter((link) => link.id !== id));
-    });
+  const handleGenerateClick = () => {
+    const newObject: ObjectData = {
+      id: Date.now().toString(),
+      data: value
+    };
+
+    axios.post(`${FirebaseUrl}/objects.json`, newObject)
+      .then(response => {
+        setObjects(prevObjects => [...prevObjects, {
+          id: response.data.name,
+          data: newObject.data
+        }]);
+      })
+      .catch(error => console.error(error));
+    setValue('');
   };
 
-  const handleEditLink = (id: string, name: string) => {
-    const newName = prompt("Enter new name", name);
-    if (newName) {
-      axios.patch(`${FirebaseUrl}/links/${id}.json`, { name: newName }).then(() => {
-        setLinks(links.map((link) => (link.id === id ? { ...link, name: newName } : link)));
-      });
-    }
+  const handleDeleteClick = (objectId: string) => {
+    axios.delete(`${FirebaseUrl}/objects/${objectId}.json`)
+      .then(() => {
+        setObjects(prevObjects => prevObjects.filter(obj => obj.id !== objectId));
+      })
+      .catch(error => console.error(error));
   };
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "50px" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: "50px" }}>
-          <input
-            type="text"
-            placeholder="Enter link name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-          <button onClick={handleAddLink}>Add Link</button>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {links.map((link) => (
-            <div key={link.id} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-              <Link href={link.url}>{link.name}</Link>
-              <button onClick={() => handleEditLink(link.id, link.name)}>Edit</button>
-              <button onClick={() => handleDeleteLink(link.id)}>Delete</button>
-            </div>
-          ))}
-        </div>
-      </div>
+      <style>{`
+        .ql-size-small {
+            font-size: 10px;
+        }
+        .ql-size-large {
+            font-size: 20px;
+        }
+        .ql-size-huge {
+            font-size: 36px;
+        }
+        
+      `}</style>
+      <QuillNoSSRWrapper
+        modules={modules}
+        placeholder='Compose here'
+        value={value}
+        onChange={handleChange}
+        formats={formats}
+        theme="snow"
+      />
+      <button onClick={handleGenerateClick}>Generate</button>
+      <ul>
+        {objects.map(obj => (
+          <li key={obj.id}>
+            <div>{parse(obj.data)}</div>
+            <button onClick={() => handleDeleteClick(obj.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-};
+}
 
-export default Index;

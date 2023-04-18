@@ -8,7 +8,7 @@ interface InputProps {
 
 const EditButton: React.FC<InputProps> = ({ onClick }) => {
     return (
-        <button className="text-white hover:text-green-500 pl-2" onClick={onClick}><AiOutlineEdit size={25} /></button>
+        <button className="text-white hover:text-green-500 pl-2" onClick={onClick}><AiOutlineEdit size={20} /></button>
     )
 }
 

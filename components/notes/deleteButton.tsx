@@ -9,7 +9,7 @@ interface InputProps {
 
 const DeleteButton: React.FC<InputProps> = ({ onClick }) => {
     return (
-        <button className="text-white hover:text-green-500 px-1" onClick={onClick}><TiDeleteOutline size={25}/></button>
+        <button className="text-white hover:text-green-500 px-1" onClick={onClick}><TiDeleteOutline size={20}/></button>
     )
 }
 
