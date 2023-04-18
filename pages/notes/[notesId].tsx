@@ -1,10 +1,8 @@
-import React from "react";
-import { useRouter } from 'next/router'
-
+import React, { useEffect } from "react";
 import { NextPageContext } from "next"
+import { useRouter } from "next/router"
 import { getSession } from "next-auth/react"
 import NotesElement from "@/components/notes/notesId";
-
 
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -14,7 +12,7 @@ export async function getServerSideProps(context: NextPageContext) {
       return {
           redirect: {
               destination: '/auth',
-              pernament: false,
+              permanent: false,
           }
       }
   }
@@ -24,17 +22,26 @@ export async function getServerSideProps(context: NextPageContext) {
   }
 }
 
-
-
 const NotesId = () => {
+  const router = useRouter();
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      router.reload();
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router]);
 
   return (
     <>
-      <NotesElement/>
+      <NotesElement />
     </>
   )
-
 }
   
-export default NotesId
+export default NotesId;

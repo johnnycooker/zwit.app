@@ -26,6 +26,7 @@ interface CurrentUser {
 
 const NotesPageComponent = () => {
 
+  
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [name, setName] = useState("");
   const [links, setLinks] = useState<Link[]>([]);
@@ -53,6 +54,7 @@ const NotesPageComponent = () => {
       }
     });
     }
+    
   }, [currentUser?.id]);
 
   const handleAddLink = () => {
@@ -77,6 +79,8 @@ const NotesPageComponent = () => {
     }
   };
 
+
+
   return (
     <>
         <Layout>
@@ -90,7 +94,7 @@ const NotesPageComponent = () => {
                           <ul key={link.id} className="flex flex-row pb-2">
                             <NoteLink url={link.url} label={link.name}/>
                             <EditButton onClick={() => handleEditLink(link.id, link.name)} />
-                            <DeleteButton onClick={() => handleDeleteLink(link.id)} />
+                            <DeleteButton size="20" classes="" color="white" onClick={() => handleDeleteLink(link.id)} />
                           </ul>
                         ))}
                       </div>

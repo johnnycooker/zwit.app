@@ -11,6 +11,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import { NextPage } from "next";
 import { useRouter } from 'next/router'
+import DeleteButton from "./deleteButton";
 
 const FirebaseUrl = "https://zwit-cba2d-default-rtdb.europe-west1.firebasedatabase.app/";
 
@@ -48,11 +49,6 @@ const formats = [
   'video',
 ];
 
-interface Path {
-  id?: string;
-  text: string;
-  editable?: boolean;
-}
 
 interface Link {
   id: string;
@@ -69,14 +65,16 @@ interface CurrentUser {
 const NotesElement: NextPage = () => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
 
-  
   const [links, setLinks] = useState<Link[]>([]);
-  const [path, setPath] = useState<Path[]>([]);
+  
   const [value, setValue] = useState('');
   const [objects, setObjects] = useState<ObjectData[]>([]);
 
+
   const router = useRouter();
   const { notesId } = router.query;
+
+
   
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -86,6 +84,28 @@ const NotesElement: NextPage = () => {
     };
     fetchCurrentUser();
   }, []);
+
+  
+
+  useEffect(() => {
+    
+    axios.get<ObjectData[]>(`${FirebaseUrl}/notes/${currentUser?.id}/${notesId}/objects.json`)
+      .then(response => {
+        if (response.data) {
+          const fetchedObjects: ObjectData[] = [];
+          for (const key in response.data) {
+            fetchedObjects.push({
+              id: key,
+              data: response.data[key].data
+            });
+          }
+          setObjects(fetchedObjects);
+        }
+      })
+      .catch(error => console.error(error));
+    
+  
+  }, [currentUser?.id, notesId]);
 
   useEffect(() => {
     if (currentUser?.id) {
@@ -103,28 +123,7 @@ const NotesElement: NextPage = () => {
   }
   }, [currentUser?.id]);
 
-
-
-  useEffect(() => {
-    axios.get<ObjectData[]>(`${FirebaseUrl}/notes/${currentUser?.id}/${notesId}/objects.json`)
-      .then(response => {
-        if (response.data) {
-          const fetchedObjects: ObjectData[] = [];
-          for (const key in response.data) {
-            fetchedObjects.push({
-              id: key,
-              data: response.data[key].data
-            });
-          }
-          setObjects(fetchedObjects);
-        }
-      })
-      .catch(error => console.error(error));
-  }, [currentUser?.id, notesId]);
-
-  const handleChange = (newValue: string) => {
-    setValue(newValue);
-  };
+  
 
   const handleGenerateClick = () => {
     const newObject: ObjectData = {
@@ -151,25 +150,11 @@ const NotesElement: NextPage = () => {
       .catch(error => console.error(error));
   };
   
-
-  useEffect(() => {
-    if (currentUser?.id) {
-    axios.get(`${FirebaseUrl}/notes/${currentUser?.id}/${notesId}.json`).then((response) => {
-      if (response.data) {
-        const fetchedLinks = Object.keys(response.data).map((key) => {
-          return {
-            ...response.data[key],
-            id: key,
-            editable: false,
-          };
-        });
-        setPath(fetchedLinks);
-      }
-    });
-    }
-  }, [currentUser?.id, notesId]);
-
-
+  const handleChange = (newValue: string) => {
+    setValue(newValue);
+  };
+  
+  
 
   return (
     <>
@@ -178,7 +163,7 @@ const NotesElement: NextPage = () => {
             <div className="flex-wrap justify-center top-[8rem] absolute left-[2rem] w-11/12 ">
                 <div className="flex flex-row gap-28 w-full ">
 
-                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 w-full  max-w-[15rem] h-[30rem]  rounded-lg  border-2 border-green-600 border-opacity-20">
+                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 w-full  max-w-[15rem] h-fit min-h-[47rem]  rounded-lg  border-2 border-green-600 border-opacity-20">
                       <div >
                         {links.map((link) => (
                           <ul key={link.id}>
@@ -187,10 +172,13 @@ const NotesElement: NextPage = () => {
                         ))}
                       </div>
                     </div>
-                    <div className="flex flex-col w-full">
-                      <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4 h-full  max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20 w-full">
+                    <div className="flex flex-col w-full h-full">
+                      <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4  h-fit max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20 w-full">
+                        
+                        
                         <div className="">
-                          <div>
+                          
+                            <div className="">
                             <style>{`
                               .ql-size-small {
                                   font-size: 10px;
@@ -203,30 +191,40 @@ const NotesElement: NextPage = () => {
                               }
                               
                             `}</style>
+                            
                             <QuillNoSSRWrapper
                               modules={modules}
-                              placeholder='Compose here'
+                              placeholder='Napisz tutaj...'
                               value={value}
                               onChange={handleChange}
                               formats={formats}
                               theme="snow"
+                              className="bg-white max-w-[85rem]"
                             />
-                            <button onClick={handleGenerateClick}>Generate</button>
-                          </div>
+                            
+                            </div>
+                            <div className="pt-1">
+                              <button className="bg-green-700 w-full h-[3rem] text-white rounded-[0.25rem]" onClick={handleGenerateClick}>Utwórz notatkę</button>
+                            </div>
+                          
                         </div>
                       </div>
-                      <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4 h-full w-full max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20">
-                        <div className="text-left">
-                            <ul>
+                      {objects.length > 0  &&
+                      <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4  h-fit w-full max-w-[90rem] rounded-lg text-center border-2 border-green-600 border-opacity-20">
+                        <div className=" bg-white w-full h-fit rounded-[0.25rem] py-2">
+                            <ul >
                               {objects.map(obj => (
-                                <li key={obj.id}>
-                                  <div>{parse(obj.data)}</div>
-                                  <button onClick={() => handleDeleteClick(obj.id)}>Delete</button>
+                                <li key={obj.id} className="px-2 py-2">
+                                  <div className="flex flex-row w-full">
+                                    <div className="text-left">{parse(obj.data)}</div>
+                                    <DeleteButton size="30" classes="flex absolute right-8" color="black" onClick={() => handleDeleteClick(obj.id)} />
+                                  </div>
                                 </li>
                               ))}
                             </ul>
                         </div>
                       </div>
+                      }
                     </div>
                 </div>
             </div>
