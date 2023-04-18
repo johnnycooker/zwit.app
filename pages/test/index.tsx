@@ -1,130 +1,127 @@
-import React, { useState, useEffect } from "react";
-import { Editor, EditorState, RichUtils } from "draft-js";
-import "draft-js/dist/Draft.css";
-import axios from "axios";
+import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from 'react';
+import parse from 'html-react-parser';
+import 'react-quill/dist/quill.snow.css';
+import axios from 'axios';
 
 const FirebaseUrl = "https://zwit-cba2d-default-rtdb.europe-west1.firebasedatabase.app/";
 
-interface Note {
+interface ObjectData {
   id: string;
-  text: string;
+  data: string;
 }
 
-const NoteEditor: React.FC = () => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [notes, setNotes] = useState<Note[]>([]);
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+});
+
+const modules = {
+  toolbar: [
+    [{ size: [] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }],
+    ['link', 'image', 'video'],
+    ['clean'],
+  ],
+  clipboard: { matchVisual: false },
+};
+
+const formats = [
+  'size',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'color',
+  'indent',
+  'link',
+  'image',
+  'video',
+];
+
+export default function Home() {
+  const [value, setValue] = useState('');
+  const [objects, setObjects] = useState<ObjectData[]>([]);
 
   useEffect(() => {
-    axios.get(`${FirebaseUrl}/notes.json`).then((response) => {
-      if (response.data) {
-        const fetchedNotes = Object.keys(response.data).map((key) => {
-          return {
-            ...response.data[key],
-            id: key,
-          };
-        });
-        setNotes(fetchedNotes);
-      }
-    });
+    axios.get<ObjectData[]>(`${FirebaseUrl}/objects.json`)
+      .then(response => {
+        if (response.data) {
+          const fetchedObjects: ObjectData[] = [];
+          for (const key in response.data) {
+            fetchedObjects.push({
+              id: key,
+              data: response.data[key].data
+            });
+          }
+          setObjects(fetchedObjects);
+        }
+      })
+      .catch(error => console.error(error));
   }, []);
 
-  const handleEditorChange = (editorState: EditorState) => {
-    setEditorState(editorState);
-  };
-
-  const handleBoldClick = () => {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
-  };
-
-  const handleItalicClick = () => {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, "ITALIC"));
-  };
-
-  const handleUnderlineClick = () => {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, "UNDERLINE"));
-  };
-
-  const handleColorChange = (color: string) => {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, `COLOR-${color}`));
-  };
-
-  const handleSizeChange = (size: number) => {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, `SIZE-${size}`));
+  const handleChange = (newValue: string) => {
+    setValue(newValue);
   };
 
   const handleGenerateClick = () => {
-    const text = editorState.getCurrentContent().getPlainText();
-    axios
-      .post(`${FirebaseUrl}/notes.json`, { text })
-      .then((response) => {
-        const newNote = { id: response.data.name, text };
-        setNotes([...notes, newNote]);
-        setEditorState(EditorState.createEmpty());
+    const newObject: ObjectData = {
+      id: Date.now().toString(),
+      data: value
+    };
+
+    axios.post(`${FirebaseUrl}/objects.json`, newObject)
+      .then(response => {
+        setObjects(prevObjects => [...prevObjects, {
+          id: response.data.name,
+          data: newObject.data
+        }]);
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.error(error));
+    setValue('');
   };
 
-  const handleDeleteClick = (id: string) => {
-    axios
-      .delete(`${FirebaseUrl}/notes/${id}.json`)
+  const handleDeleteClick = (objectId: string) => {
+    axios.delete(`${FirebaseUrl}/objects/${objectId}.json`)
       .then(() => {
-        const updatedNotes = notes.filter((note) => note.id !== id);
-        setNotes(updatedNotes);
+        setObjects(prevObjects => prevObjects.filter(obj => obj.id !== objectId));
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.error(error));
   };
-
-  const renderNotes = () => {
-    return notes.map((note) => {
-      return (
-        <div key={note.id}>
-          <div>{note.text}</div>
-          <button onClick={() => handleDeleteClick(note.id)}>Delete</button>
-        </div>
-      );
-    });
-  };
-
-  const currentStyle = editorState.getCurrentInlineStyle();
 
   return (
     <div>
-      <Editor editorState={editorState} onChange={handleEditorChange} />
-      <div>
-        <button onClick={handleBoldClick} style={{ fontWeight: currentStyle.has("BOLD") ? "bold" : "normal" }}>
-          B
-        </button>
-        <button onClick={handleItalicClick} style={{ fontStyle: currentStyle.has("ITALIC") ? "italic" : "normal" }}>
-          I
-        </button>
-        <button onClick={handleUnderlineClick} style={{ textDecoration: currentStyle.has("UNDERLINE") ? "underline" : "none"}}>
-U
-</button>
-<select onChange={(e) => handleColorChange(e.target.value)}>
-<option value="">Color</option>
-<option value="red">Red</option>
-<option value="green">Green</option>
-<option value="blue">Blue</option>
-</select>
-<select onChange={(e) => handleSizeChange(parseInt(e.target.value))}>
-<option value="">Size</option>
-{Array.from({ length: 10 }, (_, i) => i + 8).map((size) => (
-<option key={size} value={size}>
-{size}px
-</option>
-))}
-</select>
-<button onClick={handleGenerateClick}>Generate</button>
-</div>
-{renderNotes()}
-</div>
-);
-};
-
-export default NoteEditor;
-
-
-
-
-
+      <style>{`
+        .ql-size-small {
+            font-size: 10px;
+        }
+        .ql-size-large {
+            font-size: 20px;
+        }
+        .ql-size-huge {
+            font-size: 36px;
+        }
+        
+      `}</style>
+      <QuillNoSSRWrapper
+        modules={modules}
+        placeholder='Compose here'
+        value={value}
+        onChange={handleChange}
+        formats={formats}
+        theme="snow"
+      />
+      <button onClick={handleGenerateClick}>Generate</button>
+      <ul>
+        {objects.map(obj => (
+          <li key={obj.id}>
+            <div>{parse(obj.data)}</div>
+            <button onClick={() => handleDeleteClick(obj.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
