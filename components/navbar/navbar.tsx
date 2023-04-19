@@ -53,6 +53,7 @@ const Navbar = () => {
                     </div>
                     <div className="flex-row gap-9 flex">
                         <Link href='/vpn'><NavbarItem label="Zestawianie VPN"/></Link>
+                        <Link href='/incidents'><NavbarItem label="Zgłoszenia"/></Link>
                         <Link href='/notes'><NavbarItem label="Notatki"/></Link>
                         <Link href='/insets/drukarkafiskalna'><NavbarItem label="Wklejki"/></Link>
                     </div>
