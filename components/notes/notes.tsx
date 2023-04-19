@@ -88,7 +88,7 @@ const NotesPageComponent = () => {
             <div className="flex-wrap justify-center top-[8rem] absolute left-[2rem] w-11/12 ">
                 <div className="flex flex-row gap-28 w-full ">
 
-                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 w-full  max-w-[15rem] h-[30rem]  rounded-lg  border-2 border-green-600 border-opacity-20">
+                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 w-full  max-w-[15rem] min-h-[48rem] h-fit  rounded-lg  border-2 border-green-600 border-opacity-20">
                       <div>
                         {links.map((link) => (
                           <ul key={link.id} className="flex flex-row pb-2">

@@ -2,7 +2,7 @@ import Layout from "@/components/layout/layout"
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
-import NoteLink from "@/components/notes/noteLink";
+import IncidentLink from "./incidentLink";
 
 import dynamic from 'next/dynamic';
 import parse from 'html-react-parser';
@@ -62,7 +62,10 @@ interface CurrentUser {
 
 
 
-const NotesElement: NextPage = () => {
+const IncidentElement: NextPage = () => {
+
+  const [admin] = useState(false);
+
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
 
   const [links, setLinks] = useState<Link[]>([]);
@@ -72,7 +75,7 @@ const NotesElement: NextPage = () => {
 
 
   const router = useRouter();
-  const { notesId } = router.query;
+  const { incidentId } = router.query;
 
 
   
@@ -89,7 +92,7 @@ const NotesElement: NextPage = () => {
 
   useEffect(() => {
     
-    axios.get<ObjectData[]>(`${FirebaseUrl}/notes/${currentUser?.id}/${notesId}/objects.json`)
+    axios.get<ObjectData[]>(`${FirebaseUrl}/incidents/${currentUser?.id}/${incidentId}/objects.json`)
       .then(response => {
         if (response.data) {
           const fetchedObjects: ObjectData[] = [];
@@ -105,11 +108,11 @@ const NotesElement: NextPage = () => {
       .catch(error => console.error(error));
     
   
-  }, [currentUser?.id, notesId]);
+  }, [currentUser?.id, incidentId]);
 
   useEffect(() => {
     if (currentUser?.id) {
-    axios.get(`${FirebaseUrl}/links/${currentUser?.id}/link.json`).then((response) => {
+    axios.get(`${FirebaseUrl}/links/incidents/${currentUser?.id}/link.json`).then((response) => {
       if (response.data) {
         const fetchedLinks = Object.keys(response.data).map((key) => {
           return {
@@ -131,7 +134,7 @@ const NotesElement: NextPage = () => {
       data: value
     };
 
-    axios.post(`${FirebaseUrl}/notes/${currentUser?.id}/${notesId}/objects.json`, newObject)
+    axios.post(`${FirebaseUrl}/incidents/${currentUser?.id}/${incidentId}/objects.json`, newObject)
       .then(response => {
         setObjects(prevObjects => [...prevObjects, {
           id: response.data.name,
@@ -143,7 +146,7 @@ const NotesElement: NextPage = () => {
   };
 
   const handleDeleteClick = (objectId: string) => {
-    axios.delete(`${FirebaseUrl}/notes/${currentUser?.id}/${notesId}/objects/${objectId}.json`)
+    axios.delete(`${FirebaseUrl}/incidents/${currentUser?.id}/${incidentId}/objects/${objectId}.json`)
       .then(() => {
         setObjects(prevObjects => prevObjects.filter(obj => obj.id !== objectId));
       })
@@ -167,12 +170,13 @@ const NotesElement: NextPage = () => {
                       <div >
                         {links.map((link) => (
                           <ul key={link.id}>
-                            <NoteLink url={link.url} label={link.name}/>
+                            <IncidentLink url={link.url} label={link.name}/>
                           </ul>
                         ))}
                       </div>
                     </div>
                     <div className="flex flex-col w-full h-full">
+                      {admin &&
                       <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4  h-fit max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20 w-full">
                         
                         
@@ -209,6 +213,7 @@ const NotesElement: NextPage = () => {
                           
                         </div>
                       </div>
+                      }
                       {objects.length > 0  &&
                       <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4  h-fit w-full max-w-[90rem] rounded-lg text-center border-2 border-green-600 border-opacity-20">
                         <div className=" bg-white w-full h-fit rounded-[0.25rem] py-2">
@@ -217,7 +222,7 @@ const NotesElement: NextPage = () => {
                                 <li key={obj.id} className="px-2 py-2">
                                   <div className="flex flex-row w-full">
                                     <div className="text-left">{parse(obj.data)}</div>
-                                    <DeleteButton size="30" classes="flex absolute right-8" color="black" onClick={() => handleDeleteClick(obj.id)} />
+                                    {admin && <DeleteButton size="30" classes="flex absolute right-8" color="black" onClick={() => handleDeleteClick(obj.id)} />}
                                   </div>
                                 </li>
                               ))}
@@ -234,4 +239,4 @@ const NotesElement: NextPage = () => {
 
 }
   
-export default NotesElement
+export default IncidentElement

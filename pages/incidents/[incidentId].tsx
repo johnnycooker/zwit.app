@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { NextPageContext } from "next"
 import { useRouter } from "next/router"
 import { getSession } from "next-auth/react"
-import NotesElement from "@/components/notes/notesId";
+import IncidentElement from "@/components/incidents/incidentId";
 
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -39,7 +39,7 @@ const IncidentId = () => {
 
   return (
     <>
-      <NotesElement />
+      <IncidentElement />
     </>
   )
 }

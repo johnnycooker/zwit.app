@@ -1,6 +1,6 @@
 import React from "react"
 
-interface InputProps {
+interface IncidentProps {
     id: string
     onChange: any
     value: string
@@ -8,7 +8,7 @@ interface InputProps {
     type?: string
 }
 
-const NotesInput: React.FC<InputProps> = ({ id, onChange, value, label, type }) => {
+const IncidentInput: React.FC<IncidentProps> = ({ id, onChange, value, label, type }) => {
     return (
         <div className="relative">
             <input id={id} value={value} type={type} onChange={onChange}
@@ -22,4 +22,4 @@ const NotesInput: React.FC<InputProps> = ({ id, onChange, value, label, type }) 
     )
 }
 
-export default NotesInput;
+export default IncidentInput;
