@@ -26,6 +26,7 @@ const Vpn = () => {
   return (
     <>
       <Layout>
+        <img src='/images/black_fade.webp' alt='Logo' className="w-full h-[18rem] absolute top-[42rem] opacity-90"/>
         <SwitchButtons />
       </Layout>
     </>

@@ -26,11 +26,11 @@ interface CurrentUser {
 
 const IncidentsPageComponent = () => {
 
-  const [admin] = useState(false);
+  const [admin] = useState(true);
   
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [name, setName] = useState("");
   const [links, setLinks] = useState<Link[]>([]);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -43,7 +43,7 @@ const IncidentsPageComponent = () => {
 
   useEffect(() => {
     if (currentUser?.id) {
-    axios.get(`${FirebaseUrl}/links/incidents/${currentUser?.id}/link.json`).then((response) => {
+    axios.get(`${FirebaseUrl}/links/incidents/link.json`).then((response) => {
       if (response.data) {
         const fetchedLinks = Object.keys(response.data).map((key) => {
           return {
@@ -89,7 +89,7 @@ const IncidentsPageComponent = () => {
             <div className="flex-wrap justify-center top-[8rem] absolute left-[2rem] w-11/12 ">
                 <div className="flex flex-row gap-28 w-full ">
 
-                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 w-full  max-w-[15rem] min-h-[48rem] h-fit  rounded-lg  border-2 border-green-600 border-opacity-20">
+                    <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 w-full  max-w-[15rem] min-h-[48rem] h-fit  rounded-lg  border-2 border-green-600 border-opacity-20">
                       <div>
                         {links.map((link) => (
                           <ul key={link.id} className="flex flex-row pb-2">
@@ -102,7 +102,7 @@ const IncidentsPageComponent = () => {
                       </div>
                     </div>
                     {admin &&
-                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4 h-full w-full max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20">
+                    <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 mb-4 h-full w-full max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20">
                       <div>
                         <IncidentInput
                           type="text"
@@ -116,7 +116,7 @@ const IncidentsPageComponent = () => {
                     </div>
                     }
                     {!admin &&
-                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4 h-[48rem] w-full max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20">
+                    <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 mb-4 h-[48rem] w-full max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20">
                       <div>
                         
                       </div>

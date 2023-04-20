@@ -163,7 +163,7 @@ const NotesElement: NextPage = () => {
             <div className="flex-wrap justify-center top-[8rem] absolute left-[2rem] w-11/12 ">
                 <div className="flex flex-row gap-28 w-full ">
 
-                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 w-full  max-w-[15rem] h-fit min-h-[47rem]  rounded-lg  border-2 border-green-600 border-opacity-20">
+                    <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 w-full  max-w-[15rem] h-fit min-h-[47rem]  rounded-lg  border-2 border-green-600 border-opacity-20">
                       <div >
                         {links.map((link) => (
                           <ul key={link.id}>
@@ -173,7 +173,7 @@ const NotesElement: NextPage = () => {
                       </div>
                     </div>
                     <div className="flex flex-col w-full h-full">
-                      <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4  h-fit max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20 w-full">
+                      <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 mb-4  h-fit max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20 w-full">
                         
                         
                         <div className="">
@@ -210,7 +210,7 @@ const NotesElement: NextPage = () => {
                         </div>
                       </div>
                       {objects.length > 0  &&
-                      <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4  h-fit w-full max-w-[90rem] rounded-lg text-center border-2 border-green-600 border-opacity-20">
+                      <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 mb-4  h-fit w-full max-w-[90rem] rounded-lg text-center border-2 border-green-600 border-opacity-20">
                         <div className=" bg-white w-full h-fit rounded-[0.25rem] py-2">
                             <ul >
                               {objects.map(obj => (

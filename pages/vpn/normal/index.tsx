@@ -64,9 +64,10 @@ const Normal = () => {
 
   return (
     <Layout>
+      <img src='/images/black_fade.webp' alt='Logo' className="w-full h-[18rem] absolute top-[42rem] opacity-90"/>
       <SwitchButtons />
       <div className="flex justify-center">
-        <div className="bg-green-900 bg-opacity-95 px-5 py-5 top-[14rem] absolute max-w-4xl  rounded-lg w-full flex justify-center gap-3 border-2 border-green-600">
+        <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 top-[14rem] absolute max-w-4xl  rounded-lg w-full flex justify-center gap-3 border-2 border-green-600 border-opacity-30">
           <div className="text-xl text-center">
             <PasswordsForm onSubmit={handleSubmit} 
               onChangeRouter={(value:any) => handleInputChange("routerPassword", value)} 

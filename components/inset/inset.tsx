@@ -88,7 +88,7 @@ const Inset: React.FC<InsetProps> = ({pageName}) => {
             <div className="flex-wrap justify-center top-[8rem] absolute left-[2rem] w-11/12 ">
                 <div className="flex flex-row gap-28 w-full ">
 
-                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 w-full  max-w-[15rem] h-[30rem]  rounded-lg  border-2 border-green-600 border-opacity-20">
+                    <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 w-full  max-w-[15rem] h-[30rem]  rounded-lg  border-2 border-green-600 border-opacity-20">
                         <div className="text-xl text-left">
                             <p className="pb-4 font-bold text-green-700">WKLEJKI POS</p>
                             <ul>
@@ -106,7 +106,7 @@ const Inset: React.FC<InsetProps> = ({pageName}) => {
                         </div>
                     </div>
 
-                    <div className="bg-zinc-900 bg-opacity-90 px-5 py-5 mb-4 h-full w-full max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20">
+                    <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 mb-4 h-full w-full max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20">
                         <div>
                             {admin &&
                                 <form onSubmit={handleSubmit} className="flex flex-col gap-2 pb-2">
