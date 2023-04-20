@@ -10,7 +10,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
     return (
         <>
             <div className="px-3 text-center text-white hover:opacity-70 text-md">
-                {label}
+                <p className="">Użytkownik: {label}</p>
             </div>
             <hr className="bg-green-700 border-0 h-px my-4 opacity-70" />
         </>
