@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
-import IncidentsPageComponent from "@/components/incidents/incidents";
+import IncidentsPageComponent from "@/components/incidents/incidents"
 
 
 export async function getServerSideProps(context: NextPageContext) {

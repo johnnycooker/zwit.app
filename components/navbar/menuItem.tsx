@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 
 interface MenuItemProps {
-    label: string;
+    label: string
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
@@ -17,4 +17,4 @@ const MenuItem: React.FC<MenuItemProps> = ({
     )
 }
 
-export default MenuItem;
+export default MenuItem

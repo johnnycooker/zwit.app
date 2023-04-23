@@ -1,12 +1,8 @@
-import NextAuth from "next-auth/next";
-import Credentials from "next-auth/providers/credentials";
-import {compare} from 'bcrypt';
-
-
-import GoogleProvider from 'next-auth/providers/google';
-
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-
+import NextAuth from "next-auth/next"
+import Credentials from "next-auth/providers/credentials"
+import {compare} from 'bcrypt'
+import GoogleProvider from 'next-auth/providers/google'
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prismadb from '@/lib/prismadb'
 
 export default NextAuth({

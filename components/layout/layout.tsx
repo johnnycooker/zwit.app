@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../navbar/navbar";
-import { fetchBackgroundImageUrl } from "@/pages/api/getBackground"; 
+import { fetchBackgroundImageUrl } from "@/pages/api/background/getBackground"
 
 interface CurrentUser {
-  id: string;
+  id: string
 }
 
 function Layout(props: any) {
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState("https://www.national-geographic.pl/media/cache/slider_big/uploads/media/default/0014/43/zorza-polarna_2.jpeg");
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState("https://www.national-geographic.pl/media/cache/slider_big/uploads/media/default/0014/43/zorza-polarna_2.jpeg")
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null)
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
-      const response = await fetch('/api/current');
-      const data = await response.json();
-      setCurrentUser(data);
+      const response = await fetch('/api/current')
+      const data = await response.json()
+      setCurrentUser(data)
     };
-    fetchCurrentUser();
-  }, []);
+    fetchCurrentUser()
+  }, [])
 
   useEffect(() => {
     if (currentUser?.id) {
       fetchBackgroundImageUrl(currentUser.id).then((url) => {
-        setBackgroundImageUrl(url);
-      });
+        setBackgroundImageUrl(url)
+      })
     }
-  }, [currentUser?.id]);
+  }, [currentUser?.id])
 
   const styles = {
     backgroundImage: `url(${backgroundImageUrl})`
@@ -43,4 +43,4 @@ function Layout(props: any) {
   );
 }
 
-export default Layout;
+export default Layout

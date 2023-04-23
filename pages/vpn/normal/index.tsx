@@ -1,14 +1,14 @@
-import Layout from "@/components/layout/layout";
-import NormalConfig from "@/components/vpn/normalConfig";
-import PasswordsForm from "@/components/vpn/passwordsForm";
-import SwitchButtons from "@/components/vpn/switchButtons";
-import { useState } from "react";
+import Layout from "@/components/layout/layout"
+import NormalConfig from "@/components/vpn/normalConfig"
+import PasswordsForm from "@/components/vpn/passwordsForm"
+import SwitchButtons from "@/components/vpn/switchButtons"
+import { useState } from "react"
 
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
 
 export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context);
+  const session = await getSession(context)
 
   if (!session) {
       return {
@@ -30,20 +30,20 @@ const Normal = () => {
     vpnPassword: "",
     configPassword: '',
   });
-  const [showData, setShowData] = useState(false);
+  const [showData, setShowData] = useState(false)
  
   const [submittedData, setSubmittedData] = useState({
     routerPassword: "",
     vpnPassword: "",
     configPassword: '',
-  });
+  })
 
   const handleInputChange = (name: string, value: string) => {
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -59,8 +59,8 @@ const Normal = () => {
       vpnPassword: '',
       configPassword: '',
       
-    });
-  };
+    })
+  }
 
   return (
     <Layout>

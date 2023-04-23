@@ -1,19 +1,16 @@
-import Input from "@/components/auth/Input";
-import BottomText from "@/components/bottomText/bottomText";
-import Head from "next/head";
-import { useCallback, useState } from "react";
-import axios from "axios";
-import {signIn} from 'next-auth/react';
-
+import Input from "@/components/auth/Input"
+import BottomText from "@/components/bottomText/bottomText"
+import Head from "next/head"
+import { useCallback, useState } from "react"
+import axios from "axios"
+import {signIn} from 'next-auth/react'
 
 const Auth = () => {
-
-    
  
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-    const [variantLogin, setVariantLogin] = useState('login');
+    const [variantLogin, setVariantLogin] = useState('login')
 
     const toggleVariantLogin = useCallback(() => {
         setVariantLogin((currentVariant) => currentVariant === 'login' ? 'register' : 'login')
@@ -43,7 +40,7 @@ const Auth = () => {
         } catch (error){
             console.log(error)
         }
-    }, [email,password, login]);
+    }, [email,password, login])
 
 
     return (
@@ -83,6 +80,6 @@ const Auth = () => {
     )
 }
 
-export default Auth;
+export default Auth
 
 

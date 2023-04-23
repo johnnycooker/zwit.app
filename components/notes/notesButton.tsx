@@ -11,4 +11,4 @@ const NotesButton: React.FC<InputProps> = ({ onClick, label }) => {
     )
 }
 
-export default NotesButton;
+export default NotesButton

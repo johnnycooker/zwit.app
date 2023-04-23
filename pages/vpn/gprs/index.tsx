@@ -1,9 +1,9 @@
-import Layout from "@/components/layout/layout";
-import GprsConfig from "@/components/vpn/gprsConfig";
-import PasswordsForm from "@/components/vpn/passwordsForm";
-import ShopForm from "@/components/vpn/shopForm";
-import SwitchButtons from "@/components/vpn/switchButtons";
-import { useState } from "react";
+import Layout from "@/components/layout/layout"
+import GprsConfig from "@/components/vpn/gprsConfig"
+import PasswordsForm from "@/components/vpn/passwordsForm"
+import ShopForm from "@/components/vpn/shopForm"
+import SwitchButtons from "@/components/vpn/switchButtons"
+import { useState } from "react"
 
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
@@ -31,27 +31,27 @@ const Gprs = () => {
     vpnPassword: "",
     configPassword: '',
     shopNumber: ''
-  });
-  const [showData, setShowData] = useState(false);
-  const [showNext, setShowNext] = useState(false);
+  })
+  const [showData, setShowData] = useState(false)
+  const [showNext, setShowNext] = useState(false)
   const [submittedData, setSubmittedData] = useState({
     routerPassword: "",
     vpnPassword: "",
     configPassword: '',
     shopNumber: ''
-  });
+  })
 
   const handleInputChange = (name: string, value: string) => {
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setShowNext(true);
-  };
+    e.preventDefault()
+    setShowNext(true)
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,8 +68,8 @@ const Gprs = () => {
       vpnPassword: '',
       configPassword: '',
       shopNumber: ''
-    });
-  };
+    })
+  }
 
   return (
     <Layout>
@@ -100,6 +100,6 @@ const Gprs = () => {
   );
 };
 
-export default Gprs;
+export default Gprs
 
   

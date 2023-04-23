@@ -1,9 +1,9 @@
-import Link from "next/link";
-import React from "react";
+import Link from "next/link"
+import React from "react"
 
 interface InsetLinkProps {
-    label: string;
-    url: string;
+    label: string
+    url: string
 }
 
 const InsetLink: React.FC<InsetLinkProps> = ({
@@ -16,4 +16,4 @@ const InsetLink: React.FC<InsetLinkProps> = ({
     )
 }
 
-export default InsetLink;
+export default InsetLink

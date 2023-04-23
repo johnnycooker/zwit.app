@@ -1,45 +1,43 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Layout from "../layout/layout";
-import BackgroundInput from "./backgroundInput";
+import React, { useEffect, useState } from "react"
+import Layout from "../layout/layout"
+import BackgroundInput from "./backgroundInput"
 
-const FirebaseUrl = "https://zwit-cba2d-default-rtdb.europe-west1.firebasedatabase.app/";
+import BackgroundSubmitButton from "./backgroundSubmitButton"
+import BackgroundDescription from "./backgroundDescription"
+
+import { updateBackgroundImageUrl } from "@/pages/api/background/setBackground"
 
 interface CurrentUser {
-  id: string;
+  id: string
 }
 
 const Background = () => {
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState("");
-
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState("")
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null)
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
-      const response = await fetch('/api/current');
-      const data = await response.json();
-      setCurrentUser(data);
-    };
-    fetchCurrentUser();
-  }, []);
+      const response = await fetch('/api/current')
+      const data = await response.json()
+      setCurrentUser(data)
+    }
+    fetchCurrentUser()
+  }, [])
 
   const handleBackgroundImageChange = (event:any) => {
-    setBackgroundImageUrl(event.target.value);
+    setBackgroundImageUrl(event.target.value)
   };
 
-  const handleSubmit = (event:any) => {
-    event.preventDefault();
+  const handleSubmit = async (event:any) => {
+    event.preventDefault()
 
-    
-    axios.put(`${FirebaseUrl}/background/${currentUser?.id}/url.json`, { data: backgroundImageUrl })
-      .then(response => {
-        console.log("Background image URL updated successfully!");
-        window.location.reload();
-      })
-      .catch(error => {
-        console.error("Error updating background image URL:", error);
-      });
-  };
+    try {
+      await updateBackgroundImageUrl(currentUser?.id, backgroundImageUrl)
+      window.location.reload()
+    } catch (error) {
+      console.error("Błąd w pobraniu URL", error)
+    }
+  }
 
   return (
     <>
@@ -53,22 +51,17 @@ const Background = () => {
                       <BackgroundInput type="text" value={backgroundImageUrl} onChange={handleBackgroundImageChange} label="Wprowadź adres URL"/>
                     </div>
                     <div>
-                      <button className="bg-green-800 py-1 text-zinc-300 text-lg rounded-md w-full text-center mt-2 hover:bg-green-600 cursor-pointer border-black border-opacity-30 border-[0.05rem]" type="submit">Zmień tło</button>
+                      <BackgroundSubmitButton label="Zmień tło" />
                     </div>
                   </div>  
                 </form>
-                <div className="text-white">
-                  <p className="text-center pt-8 pb-4">Wpisz podane hasła aby zmienić tło lub wpisz własny adres URL:</p>
-                  <p>RESET - zmiana tła na podstawowe</p>
-                  <p>ZABKA - zmiana tła na żabkowe</p>
-                </div>
+                <BackgroundDescription />
               </div>
             </div>
-            
         </div>
       </Layout>
     </>
-  );
-};
+  )
+}
 
-export default Background;
+export default Background

@@ -11,4 +11,4 @@ const BackgroundButton: React.FC<InputProps> = ({ onClick, label }) => {
     )
 }
 
-export default BackgroundButton;
+export default BackgroundButton

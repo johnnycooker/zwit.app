@@ -22,4 +22,4 @@ const IncidentInput: React.FC<IncidentProps> = ({ id, onChange, value, label, ty
     )
 }
 
-export default IncidentInput;
+export default IncidentInput

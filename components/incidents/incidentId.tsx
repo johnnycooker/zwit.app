@@ -1,19 +1,24 @@
-import Layout from "@/components/layout/layout"
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
+import { NextPage } from "next";
+import { useRouter } from 'next/router'
+
+import Layout from "@/components/layout/layout"
+
 import IncidentLink from "./incidentLink";
+import DeleteButton from "./deleteButton";
+
+import useFetchLinks from "@/hooks/incidents/useFetchLinks";
+import useFetchObjects from "@/hooks/incidents/useFetchObjects";
+
+import handleAddObject from "@/pages/api/incidents/handleAddObject";
+import handleDeleteObject from "@/pages/api/incidents/handleDeleteObject";
 
 import dynamic from 'next/dynamic';
 import parse from 'html-react-parser';
 import 'react-quill/dist/quill.snow.css';
 
-
-import { NextPage } from "next";
-import { useRouter } from 'next/router'
-import DeleteButton from "./deleteButton";
-
-const FirebaseUrl = "https://zwit-cba2d-default-rtdb.europe-west1.firebasedatabase.app/";
 
 interface ObjectData {
   id: string;
@@ -61,10 +66,9 @@ interface CurrentUser {
 }
 
 
-
 const IncidentElement: NextPage = () => {
 
-  const [admin] = useState(true);
+  const [admin] = useState(false);
 
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
 
@@ -88,69 +92,18 @@ const IncidentElement: NextPage = () => {
     fetchCurrentUser();
   }, []);
 
-  
+  useFetchLinks(currentUser, setLinks);
 
-  useEffect(() => {
-    
-    axios.get<ObjectData[]>(`${FirebaseUrl}/incidents/${currentUser?.id}/${incidentId}/objects.json`)
-      .then(response => {
-        if (response.data) {
-          const fetchedObjects: ObjectData[] = [];
-          for (const key in response.data) {
-            fetchedObjects.push({
-              id: key,
-              data: response.data[key].data
-            });
-          }
-          setObjects(fetchedObjects);
-        }
-      })
-      .catch(error => console.error(error));
-    
-  
-  }, [currentUser?.id, incidentId]);
-
-  useEffect(() => {
-    if (currentUser?.id) {
-    axios.get(`${FirebaseUrl}/links/incidents/${currentUser?.id}/link.json`).then((response) => {
-      if (response.data) {
-        const fetchedLinks = Object.keys(response.data).map((key) => {
-          return {
-            ...response.data[key],
-            id: key,
-          };
-        });
-        setLinks(fetchedLinks);
-      }
-    });
-  }
-  }, [currentUser?.id]);
-
+  useFetchObjects(currentUser, incidentId, setObjects);
   
 
   const handleGenerateClick = () => {
-    const newObject: ObjectData = {
-      id: Date.now().toString(),
-      data: value
-    };
-
-    axios.post(`${FirebaseUrl}/incidents/${currentUser?.id}/${incidentId}/objects.json`, newObject)
-      .then(response => {
-        setObjects(prevObjects => [...prevObjects, {
-          id: response.data.name,
-          data: newObject.data
-        }]);
-      })
-      .catch(error => console.error(error));
-    setValue('');
+    handleAddObject(currentUser, incidentId, value, setObjects).catch(error => console.error(error));
+    setValue("");
   };
 
   const handleDeleteClick = (objectId: string) => {
-    axios.delete(`${FirebaseUrl}/incidents/${currentUser?.id}/${incidentId}/objects/${objectId}.json`)
-      .then(() => {
-        setObjects(prevObjects => prevObjects.filter(obj => obj.id !== objectId));
-      })
-      .catch(error => console.error(error));
+    handleDeleteObject(currentUser, incidentId, objectId, setObjects);
   };
   
   const handleChange = (newValue: string) => {
@@ -178,11 +131,8 @@ const IncidentElement: NextPage = () => {
                     <div className="flex flex-col w-full h-full">
                       {admin &&
                       <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 mb-4  h-fit max-w-10/12 rounded-lg text-center border-2 border-green-600 border-opacity-20 w-full">
-                        
-                        
-                        <div className="">
-                          
-                            <div className="">
+                        <div>
+                            <div>
                             <style>{`
                               .ql-size-small {
                                   font-size: 10px;
@@ -195,7 +145,6 @@ const IncidentElement: NextPage = () => {
                               }
                               
                             `}</style>
-                            
                             <QuillNoSSRWrapper
                               modules={modules}
                               placeholder='Napisz tutaj...'
@@ -205,12 +154,10 @@ const IncidentElement: NextPage = () => {
                               theme="snow"
                               className="bg-white max-w-[85rem]"
                             />
-                            
                             </div>
                             <div className="pt-1">
                               <button className="bg-green-700 w-full h-[3rem] text-white rounded-[0.25rem]" onClick={handleGenerateClick}>Utwórz notatkę</button>
                             </div>
-                          
                         </div>
                       </div>
                       }

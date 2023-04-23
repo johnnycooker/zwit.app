@@ -1,28 +1,31 @@
 import Layout from "@/components/layout/layout"
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Link from "next/link";
-import NoteLink from "@/components/notes/noteLink";
+import React, { useState, useEffect } from "react"
+import Link from "next/link"
+import NoteLink from "@/components/notes/noteLink"
 
-import dynamic from 'next/dynamic';
-import parse from 'html-react-parser';
-import 'react-quill/dist/quill.snow.css';
+import dynamic from 'next/dynamic'
+import parse from 'html-react-parser'
+import 'react-quill/dist/quill.snow.css'
 
+import useFetchLinks from "@/hooks/notes/useFetchLinks"
+import useFetchObjects from "@/hooks/notes/useFetchObjects"
 
-import { NextPage } from "next";
+import handleAddObject from "@/pages/api/notes/handleAddObject"
+import handleDeleteObject from "@/pages/api/notes/handleDeleteObject"
+
+import { NextPage } from "next"
 import { useRouter } from 'next/router'
-import DeleteButton from "./deleteButton";
+import DeleteButton from "./deleteButton"
 
-const FirebaseUrl = "https://zwit-cba2d-default-rtdb.europe-west1.firebasedatabase.app/";
 
 interface ObjectData {
-  id: string;
-  data: string;
+  id: string
+  data: string
 }
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
-  loading: () => <p>Loading ...</p>,
+  loading: () => <p>Loading ...</p>
 });
 
 const modules = {
@@ -33,7 +36,7 @@ const modules = {
     ['link', 'image', 'video'],
     ['clean'],
   ],
-  clipboard: { matchVisual: false },
+  clipboard: { matchVisual: false }
 };
 
 const formats = [
@@ -51,108 +54,60 @@ const formats = [
 
 
 interface Link {
-  id: string;
-  name: string;
-  url: string;
+  id: string
+  name: string
+  url: string
 }
 
 interface CurrentUser {
-  id: string;
+  id: string
 }
 
 
 
 const NotesElement: NextPage = () => {
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null)
 
-  const [links, setLinks] = useState<Link[]>([]);
+  const [links, setLinks] = useState<Link[]>([])
   
-  const [value, setValue] = useState('');
-  const [objects, setObjects] = useState<ObjectData[]>([]);
+  const [value, setValue] = useState('')
+  const [objects, setObjects] = useState<ObjectData[]>([])
 
 
-  const router = useRouter();
-  const { notesId } = router.query;
+  const router = useRouter()
+  const { notesId } = router.query
 
 
   
   useEffect(() => {
     const fetchCurrentUser = async () => {
-      const response = await fetch('/api/current');
-      const data = await response.json();
-      setCurrentUser(data);
-    };
-    fetchCurrentUser();
-  }, []);
+      const response = await fetch('/api/current')
+      const data = await response.json()
+      setCurrentUser(data)
+    }
+    fetchCurrentUser()
+  }, [])
 
   
 
-  useEffect(() => {
-    
-    axios.get<ObjectData[]>(`${FirebaseUrl}/notes/${currentUser?.id}/${notesId}/objects.json`)
-      .then(response => {
-        if (response.data) {
-          const fetchedObjects: ObjectData[] = [];
-          for (const key in response.data) {
-            fetchedObjects.push({
-              id: key,
-              data: response.data[key].data
-            });
-          }
-          setObjects(fetchedObjects);
-        }
-      })
-      .catch(error => console.error(error));
-    
-  
-  }, [currentUser?.id, notesId]);
+  useFetchObjects(currentUser, notesId, setObjects)
 
-  useEffect(() => {
-    if (currentUser?.id) {
-    axios.get(`${FirebaseUrl}/links/${currentUser?.id}/link.json`).then((response) => {
-      if (response.data) {
-        const fetchedLinks = Object.keys(response.data).map((key) => {
-          return {
-            ...response.data[key],
-            id: key,
-          };
-        });
-        setLinks(fetchedLinks);
-      }
-    });
-  }
-  }, [currentUser?.id]);
+  useFetchLinks(currentUser, setLinks)
 
   
 
   const handleGenerateClick = () => {
-    const newObject: ObjectData = {
-      id: Date.now().toString(),
-      data: value
-    };
-
-    axios.post(`${FirebaseUrl}/notes/${currentUser?.id}/${notesId}/objects.json`, newObject)
-      .then(response => {
-        setObjects(prevObjects => [...prevObjects, {
-          id: response.data.name,
-          data: newObject.data
-        }]);
-      })
-      .catch(error => console.error(error));
-    setValue('');
+    handleAddObject(currentUser, notesId, value, setObjects).catch(error => console.error(error))
+    setValue("")
   };
 
   const handleDeleteClick = (objectId: string) => {
-    axios.delete(`${FirebaseUrl}/notes/${currentUser?.id}/${notesId}/objects/${objectId}.json`)
-      .then(() => {
-        setObjects(prevObjects => prevObjects.filter(obj => obj.id !== objectId));
-      })
-      .catch(error => console.error(error));
+    handleDeleteObject(currentUser, notesId, objectId, setObjects)
   };
-  
+
   const handleChange = (newValue: string) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
   
   
 

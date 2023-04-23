@@ -15,4 +15,4 @@ const DeleteButton: React.FC<InputProps> = ({ onClick, color, classes, size }) =
     )
 }
 
-export default DeleteButton;
+export default DeleteButton

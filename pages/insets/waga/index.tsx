@@ -1,5 +1,5 @@
-import React from "react";
-import Inset from "@/components/inset/inset";
+import React from "react"
+import Inset from "@/components/inset/inset"
 
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"

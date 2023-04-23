@@ -11,4 +11,4 @@ const IncidentButton: React.FC<IncidentProps> = ({ onClick, label }) => {
     )
 }
 
-export default IncidentButton;
+export default IncidentButton

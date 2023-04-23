@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from "react"
 import { NextPageContext } from "next"
 import { useRouter } from "next/router"
 import { getSession } from "next-auth/react"
-import IncidentElement from "@/components/incidents/incidentId";
+import IncidentElement from "@/components/incidents/incidentId"
 
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -23,19 +23,19 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 const IncidentId = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
     const handleRouteChange = () => {
-      router.reload();
+      router.reload()
     };
 
-    router.events.on('routeChangeComplete', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChange)
 
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router]);
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router])
 
   return (
     <>
@@ -44,4 +44,4 @@ const IncidentId = () => {
   )
 }
   
-export default IncidentId;
+export default IncidentId

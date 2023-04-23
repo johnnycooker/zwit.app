@@ -1,5 +1,5 @@
-import Link from "next/link";
-import React from "react";
+import Link from "next/link"
+import React from "react"
 
 interface MenuItemProps {
     label: string;
@@ -18,4 +18,4 @@ const BackgroundItem: React.FC<MenuItemProps> = ({
     )
 }
 
-export default BackgroundItem;
+export default BackgroundItem

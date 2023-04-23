@@ -1,4 +1,4 @@
-import Version from "./version";
+import Version from "./version"
 
 export default function BottomText() {
     return (

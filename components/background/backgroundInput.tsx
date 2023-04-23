@@ -21,4 +21,4 @@ const BackgroundInput: React.FC<InputProps> = ({ onChange, value, label, type })
     )
 }
 
-export default BackgroundInput;
+export default BackgroundInput

@@ -1,10 +1,8 @@
-import useCurrentUser from "@/hooks/useCurrentUser";
+import useCurrentUser from "@/hooks/useCurrentUser"
 import React from "react"
-import MenuItem from "./menuItem";
-import Logout from "./logout";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import BackgroundItem from "./backgroundItem";
+import MenuItem from "./menuItem"
+import Logout from "./logout"
+import BackgroundItem from "./backgroundItem"
 
 interface AcoountMenuProps {
     visible?: boolean;

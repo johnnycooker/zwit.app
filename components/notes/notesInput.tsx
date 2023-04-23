@@ -22,4 +22,4 @@ const NotesInput: React.FC<InputProps> = ({ id, onChange, value, label, type }) 
     )
 }
 
-export default NotesInput;
+export default NotesInput

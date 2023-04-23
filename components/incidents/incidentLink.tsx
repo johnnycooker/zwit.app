@@ -1,9 +1,9 @@
-import Link from "next/link";
-import React from "react";
+import Link from "next/link"
+import React from "react"
 
 interface IncidentLinkProps {
-    label: string;
-    url: string;
+    label: string
+    url: string
 }
 
 const IncidentLink: React.FC<IncidentLinkProps> = ({
@@ -16,4 +16,4 @@ const IncidentLink: React.FC<IncidentLinkProps> = ({
     )
 }
 
-export default IncidentLink;
+export default IncidentLink

@@ -1,7 +1,7 @@
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
-import Head from "next/head";
-import Layout from "@/components/layout/layout";
+import Head from "next/head"
+import Layout from "@/components/layout/layout"
 
 
 export async function getServerSideProps(context: NextPageContext) {

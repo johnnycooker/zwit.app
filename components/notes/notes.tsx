@@ -1,16 +1,16 @@
 import Layout from "@/components/layout/layout"
 
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 import Link from "next/link";
 import NotesInput from "@/components/notes/notesInput";
 import NotesButton from "@/components/notes/notesButton";
 import NoteLink from "./noteLink";
-import EditButton from "./editButton";
 import DeleteButton from "./deleteButton";
 
-const FirebaseUrl = "https://zwit-cba2d-default-rtdb.europe-west1.firebasedatabase.app/";
+import handleAddLink from "@/pages/api/linksNotes/handleAddLink";
+import handleDeleteLink from "@/pages/api/linksNotes/handleDeleteLink";
+import useFetchLinks from "@/hooks/notes/useFetchLinks";
 
 interface Link {
   id: string;
@@ -40,44 +40,18 @@ const NotesPageComponent = () => {
     fetchCurrentUser();
   }, []);
 
-  useEffect(() => {
-    if (currentUser?.id) {
-    axios.get(`${FirebaseUrl}/links/${currentUser?.id}/link.json`).then((response) => {
-      if (response.data) {
-        const fetchedLinks = Object.keys(response.data).map((key) => {
-          return {
-            ...response.data[key],
-            id: key,
-          };
-        });
-        setLinks(fetchedLinks);
-      }
-    });
-    }
-    
-  }, [currentUser?.id]);
+  useFetchLinks(currentUser, setLinks)
 
-  const handleAddLink = () => {
-    axios.post(`${FirebaseUrl}/links/${currentUser?.id}/link.json`, { name, url: `/${name}` }).then((response) => {
-      setLinks([...links, { id: response.data.name, name, url: `/${name}` }]);
-      setName("");
-    });
+  const handleAddLinkWrapper = () => {
+    handleAddLink(currentUser, name, setLinks)
+    setName("")
   };
 
-  const handleDeleteLink = (id: string) => {
-    axios.delete(`${FirebaseUrl}/links/${currentUser?.id}/link/${id}.json`).then(() => {
-      setLinks(links.filter((link) => link.id !== id));
-    });
+  const handleDeleteLinkWrapper = (id: string) => {
+    handleDeleteLink(id, currentUser, links, setLinks)
   };
 
-  const handleEditLink = (id: string, name: string) => {
-    const newName = prompt("Enter new name", name);
-    if (newName) {
-      axios.patch(`${FirebaseUrl}/links/${currentUser?.id}/link.json`, { name: newName }).then(() => {
-        setLinks(links.map((link) => (link.id === id ? { ...link, name: newName } : link)));
-      });
-    }
-  };
+  
 
 
 
@@ -93,8 +67,7 @@ const NotesPageComponent = () => {
                         {links.map((link) => (
                           <ul key={link.id} className="flex flex-row pb-2">
                             <NoteLink url={link.url} label={link.name}/>
-                            <EditButton onClick={() => handleEditLink(link.id, link.name)} />
-                            <DeleteButton size="20" classes="" color="white" onClick={() => handleDeleteLink(link.id)} />
+                            <DeleteButton size="20" classes="" color="white" onClick={() => handleDeleteLinkWrapper(link.id)} />
                           </ul>
                         ))}
                       </div>
@@ -109,7 +82,7 @@ const NotesPageComponent = () => {
                           onChange={(event:any) => setName(event.target.value)}
                           label="Podaj nazwę folderu"
                         />
-                        <NotesButton onClick={handleAddLink} label="Stwórz folder"/>
+                        <NotesButton onClick={handleAddLinkWrapper} label="Stwórz folder"/>
                       </div>
                     </div>
                 </div>

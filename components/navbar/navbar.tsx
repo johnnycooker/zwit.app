@@ -7,7 +7,7 @@ import Menu from "./menu"
 import Link from "next/link"
 
 
-const TOP_OFSET = 150;
+const TOP_OFSET = 150
 
 const Navbar = () => {
 
