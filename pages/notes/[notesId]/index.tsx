@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { getSession } from "next-auth/react"
 import NotesElement from "@/components/notes/notesId"
-import NotesLoadingPage from "@/components/notes/notesLoadingPage"
+import NotesIdLoadingPage from "@/components/notes/notesIdLoadingPage"
 
 const NotesId = () => {
   const router = useRouter()
@@ -23,7 +23,7 @@ const NotesId = () => {
 
   return (
     <>
-      {loading ? <NotesLoadingPage /> : <NotesElement />}
+      {loading ? <NotesIdLoadingPage /> : <NotesElement />}
     </>
   )
 }
