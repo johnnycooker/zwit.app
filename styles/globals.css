@@ -13,3 +13,22 @@ body {
 html {
   @apply h-full;
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+} 
+
+
+::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0);
+} 
+
+
+ ::-webkit-scrollbar-thumb {
+    background-color: rgba(11, 134, 48, 0.5);
+} 
+
+
+ ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(20, 155, 54, 0.61);
+} 

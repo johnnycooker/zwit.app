@@ -42,6 +42,7 @@ const Background = () => {
   return (
     <>
       <Layout>
+        <img src='/images/black_fade.webp' alt='Logo' className="w-full h-[18rem] absolute top-[42rem] opacity-90"/>
         <div className="flex justify-center">
             <div className="bg-neutral-600 bg-opacity-20 px-5 py-5 top-[6rem] absolute lg:2/5  rounded-lg min-w-[45rem] w-fit flex justify-center border-2 border-green-600 border-opacity-20">
               <div>
