@@ -1,45 +1,36 @@
-import React, { useState } from 'react'
-import { useSpring, a } from '@react-spring/web'
-
-import styles from './styles.module.css'
-
-
-import Link from "next/link"
+import React, { useState } from 'react';
+import { useSpring, animated } from '@react-spring/web';
+import styles from './styles.module.css';
+import Link from 'next/link';
 
 
 const VpnComponent = () => {
 
-    const [flipped, set] = useState(false)
-    const { transform, opacity } = useSpring({
-    opacity: flipped ? 1 : 0,
-    transform: `perspective(600px) rotateX(${flipped ? 180 : 0}deg)`,
-    config: { mass: 5, tension: 500, friction: 80 },
-    })
+    const [hovered, setHovered] = useState(false);
+    const { opacity, transform } = useSpring({
+    opacity: hovered ? 1 : 0,
+    transform: hovered ? 'translateY(-50%)' : 'translateY(0%)',
+    });
 
-
-
-    return (
-        <>
-            <Link href={`/vpn`}>
-                <div className={styles.container} onMouseEnter={() => set(state => !state)} onMouseLeave={() => set(state => !state)}>
-                    <a.div
-                        className={`${styles.c} ${styles.back}`}
-                        style={{ opacity: opacity.to(o => 1 - o), transform }}
-                        />
-                    
-                    
-                    <a.div
-                        className={`${styles.c} ${styles.front}`}
-                        style={{
-                        opacity,
-                        transform,
-                        rotateX: '180deg',
-                        }}
-                    />
-                </div>
-            </Link>
-        </>
-    )
+  return (
+    <Link href={`/incidents`}>
+      <div
+        className={styles.container}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <div className={styles.front}>
+          <animated.div
+            className={styles.backdrop}
+            style={{ opacity, transform }}
+          />
+          <div className={styles.text}>
+            <p>VPN</p>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
 }
 
 export default VpnComponent
