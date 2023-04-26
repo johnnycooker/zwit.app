@@ -7,6 +7,7 @@ import { useState } from "react"
 
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
+import Head from "next/head"
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -72,31 +73,36 @@ const Gprs = () => {
   }
 
   return (
-    <Layout>
-      <img src='/images/black_fade.webp' alt='Logo' className="w-full h-[18rem] absolute top-[42rem] opacity-90"/>
-      <SwitchButtons />
-      <div className="flex justify-center">
-        <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 top-[14rem] absolute max-w-4xl  rounded-lg w-full flex justify-center gap-3 border-2 border-green-600">
-          <div className="text-xl text-center">
-            {showNext ? (
-              <PasswordsForm onSubmit={handleSubmit} 
-              onChangeRouter={(value:any) => handleInputChange("routerPassword", value)} 
-              valueRouter={formData.routerPassword} 
-              onChangeConfig={(value:any) => handleInputChange("configPassword", value)} 
-              valueConfig={formData.configPassword} 
-              onChangeVpn={(value:any) => handleInputChange("vpnPassword", value)} 
-              valueVpn={formData.vpnPassword}
-            />
-            ) : (
-              <ShopForm value={formData.shopNumber} onChange={(value:any) => handleInputChange("shopNumber", value)} onSubmit={handleNext}/>
-            )}
+    <>
+      <Head>
+          <title>VPN - GPRS</title>
+      </Head>
+      <Layout>
+        <img src='/images/black_fade.webp' alt='Logo' className="w-full h-[18rem] absolute top-[42rem] opacity-90"/>
+        <SwitchButtons />
+        <div className="flex justify-center">
+          <div className="bg-zinc-600 bg-opacity-30 px-5 py-5 top-[14rem] absolute max-w-4xl  rounded-lg w-full flex justify-center gap-3 border-2 border-green-600">
+            <div className="text-xl text-center">
+              {showNext ? (
+                <PasswordsForm onSubmit={handleSubmit} 
+                onChangeRouter={(value:any) => handleInputChange("routerPassword", value)} 
+                valueRouter={formData.routerPassword} 
+                onChangeConfig={(value:any) => handleInputChange("configPassword", value)} 
+                valueConfig={formData.configPassword} 
+                onChangeVpn={(value:any) => handleInputChange("vpnPassword", value)} 
+                valueVpn={formData.vpnPassword}
+              />
+              ) : (
+                <ShopForm value={formData.shopNumber} onChange={(value:any) => handleInputChange("shopNumber", value)} onSubmit={handleNext}/>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      {showData && (
-        <GprsConfig router={submittedData.routerPassword} config={submittedData.configPassword} vpn={submittedData.vpnPassword} shop={submittedData.shopNumber}/>
-      )}
-    </Layout>
+        {showData && (
+          <GprsConfig router={submittedData.routerPassword} config={submittedData.configPassword} vpn={submittedData.vpnPassword} shop={submittedData.shopNumber}/>
+        )}
+      </Layout>
+    </>
   );
 };
 

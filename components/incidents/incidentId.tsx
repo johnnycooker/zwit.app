@@ -18,6 +18,7 @@ import handleDeleteObject from "@/pages/api/incidents/handleDeleteObject";
 import dynamic from 'next/dynamic';
 import parse from 'html-react-parser';
 import 'react-quill/dist/quill.snow.css';
+import Head from "next/head";
 
 
 interface ObjectData {
@@ -114,6 +115,9 @@ const IncidentElement: NextPage = () => {
 
   return (
     <>
+        <Head>
+          <title>Zgłoszenia - {incidentId}</title>
+        </Head>
         <Layout>
             <img src='/images/black_fade.webp' alt='Logo' className="w-full h-[18rem] absolute top-[42rem] opacity-90"/>
             <div className="flex-wrap justify-center top-[8rem] absolute left-[2rem] w-11/12 ">

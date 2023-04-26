@@ -11,6 +11,7 @@ import DeleteButton from "./deleteButton";
 import handleAddLink from "@/pages/api/linksNotes/handleAddLink";
 import handleDeleteLink from "@/pages/api/linksNotes/handleDeleteLink";
 import useFetchLinks from "@/hooks/notes/useFetchLinks";
+import Head from "next/head";
 
 interface Link {
   id: string;
@@ -57,6 +58,9 @@ const NotesPageComponent = () => {
 
   return (
     <>
+      <Head>
+          <title>ZWIT - Notatki</title>
+      </Head>
         <Layout>
             <img src='/images/black_fade.webp' alt='Logo' className="w-full h-[18rem] absolute top-[42rem] opacity-90"/>
             <div className="flex-wrap justify-center top-[8rem] absolute left-[2rem] w-11/12 ">

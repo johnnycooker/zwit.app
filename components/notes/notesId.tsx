@@ -16,6 +16,7 @@ import handleDeleteObject from "@/pages/api/notes/handleDeleteObject"
 import { NextPage } from "next"
 import { useRouter } from 'next/router'
 import DeleteButton from "./deleteButton"
+import Head from "next/head"
 
 
 interface ObjectData {
@@ -113,6 +114,9 @@ const NotesElement: NextPage = () => {
 
   return (
     <>
+      <Head>
+          <title>Notatki - {notesId}</title>
+      </Head>
         <Layout>
             <img src='/images/black_fade.webp' alt='Logo' className="w-full h-[18rem] absolute top-[42rem] opacity-90"/>
             <div className="flex-wrap justify-center top-[8rem] absolute left-[2rem] w-11/12 ">

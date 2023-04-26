@@ -7,8 +7,9 @@ interface CurrentUser {
 }
 
 function Layout(props: any) {
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState("https://www.national-geographic.pl/media/cache/slider_big/uploads/media/default/0014/43/zorza-polarna_2.jpeg")
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null)
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState("https://www.national-geographic.pl/media/cache/slider_big/uploads/media/default/0014/43/zorza-polarna_2.jpeg");
+  const [selectedBackgroundImageUrl, setSelectedBackgroundImageUrl] = useState(null);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -16,19 +17,25 @@ function Layout(props: any) {
       const data = await response.json()
       setCurrentUser(data)
     };
-    fetchCurrentUser()
-  }, [])
+    fetchCurrentUser();
+  }, []);
 
   useEffect(() => {
     if (currentUser?.id) {
-      fetchBackgroundImageUrl(currentUser.id).then((url) => {
-        setBackgroundImageUrl(url)
-      })
+      fetchBackgroundImageUrl(currentUser.id).then((url:any) => {
+        setSelectedBackgroundImageUrl(url);
+      });
     }
-  }, [currentUser?.id])
+  }, [currentUser?.id]);
+
+  useEffect(() => {
+    if (selectedBackgroundImageUrl) {
+      setBackgroundImageUrl(selectedBackgroundImageUrl);
+    }
+  }, [selectedBackgroundImageUrl]);
 
   const styles = {
-    backgroundImage: `url(${backgroundImageUrl})`
+    backgroundImage: `url(${backgroundImageUrl})`,
   };
 
   return (

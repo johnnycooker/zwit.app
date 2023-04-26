@@ -1,0 +1,24 @@
+.c {
+    position: absolute;
+    width: 19%;
+    height: 16.7rem;
+    cursor: pointer;
+    will-change: transform, opacity;
+    border-width: 1px;
+    border-color: rgb(2, 80, 30);
+  }
+  
+  .front,
+  .back {
+    background-size: cover;
+  }
+  
+  .back {
+    background-image: url(/images/tlo_przod_vpn.jpg);
+  }
+  
+  .front {
+    background-image: url(/images/tlo_tyl_vpn.jpg);
+  }
+  
+  

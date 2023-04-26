@@ -7,6 +7,7 @@ import NotesInput from "@/components/notes/notesInput";
 import NotesButton from "@/components/notes/notesButton";
 import {VscLoading} from 'react-icons/vsc'
 import useFetchLinks from "@/hooks/notes/useFetchLinks";
+import Head from "next/head";
 
 interface Link {
   id: string;
@@ -40,6 +41,9 @@ const NotesLoadingPage = () => {
 
   return (
     <>
+      <Head>
+          <title>ZWIT - Notatki</title>
+      </Head>
         <Layout>
             <img src='/images/black_fade.webp' alt='Logo' className="w-full h-[18rem] absolute top-[42rem] opacity-90"/>
             <div className="flex-wrap justify-center top-[8rem] absolute left-[2rem] w-11/12 ">

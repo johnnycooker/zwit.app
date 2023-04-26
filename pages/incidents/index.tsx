@@ -2,6 +2,7 @@ import React from "react"
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
 import IncidentsPageComponent from "@/components/incidents/incidents"
+import Head from "next/head";
 
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -27,6 +28,9 @@ const Incidents = () => {
 
   return (
     <>
+      <Head>
+          <title>ZWIT - Zgłoszenia</title>
+      </Head>
       <IncidentsPageComponent />
     </>
   )
