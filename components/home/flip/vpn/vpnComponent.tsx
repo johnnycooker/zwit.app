@@ -13,7 +13,7 @@ const VpnComponent = () => {
     });
 
   return (
-    <Link href={`/incidents`}>
+    <Link href={`/vpn`}>
       <div
         className={styles.container}
         onMouseEnter={() => setHovered(true)}

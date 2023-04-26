@@ -13,7 +13,7 @@ const InsetsComponent = () => {
     });
 
   return (
-    <Link href={`/incidents`}>
+    <Link href={`/insets`}>
       <div
         className={styles.container}
         onMouseEnter={() => setHovered(true)}

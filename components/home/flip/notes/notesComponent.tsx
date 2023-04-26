@@ -14,7 +14,7 @@ const NotesComponent = () => {
   });
 
   return (
-    <Link href={`/incidents`}>
+    <Link href={`/notes`}>
       <div
         className={styles.container}
         onMouseEnter={() => setHovered(true)}
