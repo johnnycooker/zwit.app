@@ -12,18 +12,35 @@ interface CurrentUser {
 }
 
 const handleAddObject = async (currentUser: CurrentUser | null, incidentId: string | string[] | undefined, value: string, setObjects: React.Dispatch<React.SetStateAction<ObjectData[]>>) => {
-  try {
-    const newObject: ObjectData = {
-      id: Date.now().toString(),
-      data: value
-    };
 
-    const response = await axios.post(`${FirebaseUrl}/incidents/${currentUser?.id}/${incidentId}/objects.json`, newObject)
-    const newObjectData: ObjectData = { id: response.data.name, data: newObject.data }
-    setObjects((prevObjects) => [...prevObjects, newObjectData])
-  } catch (error) {
-    console.error(error)
-  }
+  if(currentUser?.id === '642c4a41d51211f0e2628654'){
+    try {
+      const newObject: ObjectData = {
+        id: Date.now().toString(),
+        data: value
+      };
+  
+      const response = await axios.post(`${FirebaseUrl}/incidents/test/${incidentId}/objects.json`, newObject)
+      const newObjectData: ObjectData = { id: response.data.name, data: newObject.data }
+      setObjects((prevObjects) => [...prevObjects, newObjectData])
+    } catch (error) {
+      console.error(error)
+    }
+  } else {
+    try {
+      const newObject: ObjectData = {
+        id: Date.now().toString(),
+        data: value
+      };
+  
+      const response = await axios.post(`${FirebaseUrl}/incidents/${incidentId}/objects.json`, newObject)
+      const newObjectData: ObjectData = { id: response.data.name, data: newObject.data }
+      setObjects((prevObjects) => [...prevObjects, newObjectData])
+    } catch (error) {
+      console.error(error)
+    }
+  } 
+  
 };
 
 export default handleAddObject

@@ -12,12 +12,24 @@ interface CurrentUser {
 }
 
 const handleDeleteObject = async (currentUser: CurrentUser | null, incidentId: string | string[] | undefined, objectId: string, setObjects: React.Dispatch<React.SetStateAction<ObjectData[]>>) => {
-  try {
-    await axios.delete(`${FirebaseUrl}/incidents/${currentUser?.id}/${incidentId}/objects/${objectId}.json`)
-    setObjects(prevObjects => prevObjects.filter(obj => obj.id !== objectId))
-  } catch (error) {
-    console.error(error)
+
+  if(currentUser?.id === '642c4a41d51211f0e2628654'){
+    try {
+      await axios.delete(`${FirebaseUrl}/incidents/test/${incidentId}/objects/${objectId}.json`)
+      setObjects(prevObjects => prevObjects.filter(obj => obj.id !== objectId))
+    } catch (error) {
+      console.error(error)
+    }
+  }else{
+    try {
+      await axios.delete(`${FirebaseUrl}/incidents/${incidentId}/objects/${objectId}.json`)
+      setObjects(prevObjects => prevObjects.filter(obj => obj.id !== objectId))
+    } catch (error) {
+      console.error(error)
+    }
   }
+
+  
 };
 
 export default handleDeleteObject

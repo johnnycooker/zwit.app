@@ -15,9 +15,25 @@ interface CurrentUser {
 const useFetchObjects = (currentUser: CurrentUser | null, incidentId: string | string[] | undefined, setObjects: React.Dispatch<React.SetStateAction<ObjectData[]>>) => {
   useEffect(() => {
     const fetchObjects = async () => {
-      if (currentUser?.id && incidentId) {
+      if (currentUser?.id === '642c4a41d51211f0e2628654' && incidentId) {
         try {
-          const response = await axios.get<ObjectData[]>(`${FirebaseUrl}/incidents/${currentUser.id}/${incidentId}/objects.json`);
+          const response = await axios.get<ObjectData[]>(`${FirebaseUrl}/incidents/test/${incidentId}/objects.json`);
+          if (response.data) {
+            const fetchedObjects: ObjectData[] = [];
+            for (const key in response.data) {
+              fetchedObjects.push({
+                id: key,
+                data: response.data[key].data
+              });
+            }
+            setObjects(fetchedObjects);
+          }
+        } catch (error) {
+          console.error("Błąd przy pobieraniu danych", error);
+        }
+      }else if(currentUser?.id !== '642c4a41d51211f0e2628654' && incidentId){
+        try {
+          const response = await axios.get<ObjectData[]>(`${FirebaseUrl}/incidents/${incidentId}/objects.json`);
           if (response.data) {
             const fetchedObjects: ObjectData[] = [];
             for (const key in response.data) {

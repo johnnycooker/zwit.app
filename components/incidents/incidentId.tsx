@@ -69,7 +69,7 @@ interface CurrentUser {
 
 const IncidentElement: NextPage = () => {
 
-  const [admin] = useState(false);
+  const [admin] = useState(true);
 
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
 

@@ -25,7 +25,7 @@ interface CurrentUser {
 
 const IncidentsPageComponent = () => {
 
-  const [admin] = useState(false)
+  const [admin] = useState(true)
   
   const [name, setName] = useState("")
   const [links, setLinks] = useState<Link[]>([])

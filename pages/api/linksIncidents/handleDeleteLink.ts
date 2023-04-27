@@ -13,11 +13,21 @@ interface Link {
   }
 
 const handleDeleteLink = async (id: string, currentUser: CurrentUser | null, links: Link[], setLinks: React.Dispatch<React.SetStateAction<Link[]>>) => {
-  try {
-    await axios.delete(`${FirebaseUrl}/links/incidents/${currentUser?.id}/link/${id}.json`)
-    setLinks(links.filter((link) => link.id !== id))
-  } catch (error) {
-    console.error(error)
+
+  if(currentUser?.id === '642c4a41d51211f0e2628654'){
+    try {
+      await axios.delete(`${FirebaseUrl}/links/incidents/test/link/${id}.json`)
+      setLinks(links.filter((link) => link.id !== id))
+    } catch (error) {
+      console.error(error)
+    }
+  }else{
+    try {
+      await axios.delete(`${FirebaseUrl}/links/incidents/link/${id}.json`)
+      setLinks(links.filter((link) => link.id !== id))
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 

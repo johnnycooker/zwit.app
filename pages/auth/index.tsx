@@ -6,6 +6,7 @@ import axios from "axios"
 import {signIn} from 'next-auth/react'
 
 const Auth = () => {
+    const [admin] = useState(true);
  
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -13,7 +14,12 @@ const Auth = () => {
     const [variantLogin, setVariantLogin] = useState('login')
 
     const toggleVariantLogin = useCallback(() => {
-        setVariantLogin((currentVariant) => currentVariant === 'login' ? 'register' : 'login')
+        if(admin){
+            setVariantLogin((currentVariant) => currentVariant === 'login' ? 'register' : 'login')
+        }else{
+            setVariantLogin('login')
+        }
+        
     }, [])
 
     const login = useCallback(async () => {
@@ -31,14 +37,16 @@ const Auth = () => {
     }, [email, password])
 
     const register = useCallback(async () => {
-        try {
-            await axios.post('/api/register', {
-                email,
-                password
-            })
-            login()
-        } catch (error){
-            console.log(error)
+        if(admin){
+            try {
+                await axios.post('/api/register', {
+                    email,
+                    password
+                })
+                login()
+            } catch (error){
+                console.log(error)
+            }
         }
     }, [email,password, login])
 
@@ -68,7 +76,7 @@ const Auth = () => {
                         <p className="text-neutral-500 mt-12 text-center">
                             {variantLogin === 'login' ? "Nie utworzyłeś konta?" : "Masz już konto?"}
                             <span onClick={toggleVariantLogin} className="text-green-700 ml-1 cursor-pointer hover:text-green-600">
-                                {variantLogin === 'login' ? "Utwórz nowe konto ZWIT." : "Zaloguj się do ZWIT."} 
+                                {variantLogin === 'login' ? "Skontaktuj się z administratorem." : "Zaloguj się do ZWIT."} 
                             </span>  
                         </p>
                     </div>

@@ -16,9 +16,24 @@ interface CurrentUser {
 const useFetchLinks = (currentUser: CurrentUser | null, setLinks: React.Dispatch<React.SetStateAction<Link[]>>) => {
   useEffect(() => {
     const fetchLinks = async () => {
-      if (currentUser?.id) {
+      if (currentUser?.id === '642c4a41d51211f0e2628654') {
         try {
-          const response = await axios.get(`${FirebaseUrl}/links/incidents/${currentUser.id}/link.json`);
+          const response = await axios.get(`${FirebaseUrl}/links/incidents/test/link.json`);
+          if (response.data) {
+            const fetchedLinks = Object.keys(response.data).map((key) => {
+              return {
+                ...response.data[key],
+                id: key,
+              };
+            });
+            setLinks(fetchedLinks);
+          }
+        } catch (error) {
+          console.error("Błąd przy pobieraniu danych", error);
+        }
+      }else if(currentUser?.id !== '642c4a41d51211f0e2628654'){
+        try {
+          const response = await axios.get(`${FirebaseUrl}/links/incidents/link.json`);
           if (response.data) {
             const fetchedLinks = Object.keys(response.data).map((key) => {
               return {
