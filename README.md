@@ -13,9 +13,7 @@ Aplikacja posiada takie funkcje jak:
 
 ### Komendy potrzebne do instalacji:
 ```bash
-npm run dev
+npm install
 # lub
-yarn dev
-# lub
-pnpm dev
+yarn install
 ```
